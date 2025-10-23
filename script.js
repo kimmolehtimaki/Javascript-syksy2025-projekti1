@@ -1,9 +1,18 @@
 const list = document.querySelector("ul");
 const input = document.querySelector("input");
-const button = document.querySelector(".addTask");
+const addButton = document.querySelector(".addTask");
+//muuttujat tehtävämuuttujien filtteröintiin
+const showAllButton = document.querySelector("#showAll");
+const showActiveButton = document.querySelector("#showActive");
+
+
+// Haetaan LocalStoragesta tallennetut "tasks"
+// function listSaved() {
+//     const data = localStorage.getItem("tasks");
+// }
 
 //lisätään tapahtuma kuuntelija
-button.addEventListener("click",  () => {
+addButton.addEventListener("click",  function() {
     const taskText = input.value;
 
     // validoitaan Input-kenttä ja luodaan uusi <li> -elementti
@@ -21,6 +30,7 @@ button.addEventListener("click",  () => {
         //selaimeen alert tehtävän suorittamisesta
             alert("Tehtävä valmis!");
             newTask.classList.toggle("done");
+            updateValue();
         });
         //lisätään "Valmis" -nappi
         newTask.appendChild(doneButton);
@@ -35,6 +45,7 @@ button.addEventListener("click",  () => {
             const confirmRemove = confirm("Haluatko varmasti poistaa tehtävän listalta?");
             if (confirmRemove) {
                 newTask.remove();
+                updateValue();
             }
         });
         //lisätään "Poista" -nappi
@@ -42,6 +53,7 @@ button.addEventListener("click",  () => {
         
         //lisätään tehtävä listaan
         list.appendChild(newTask);
+        updateValue();
         //input-kentän tyhjennys
         input.value = "";
     }
@@ -51,7 +63,36 @@ button.addEventListener("click",  () => {
     }
 });
 
+//Lasketaan li-elementtien määrä ja näytetään se sivun p id="log" elementissä
+const log = document.getElementById("allTasks");
+function updateValue() {
+    const numberOfTasks = list.getElementsByTagName("li").length;
+    const completedTasks = list.querySelectorAll("li.done").length;
+    const activeTasks = numberOfTasks - completedTasks; 
+    log.innerText = `Aktiiviset tehtävät: ${activeTasks} / ${numberOfTasks}`;
+}
+input.onchange = updateValue;
 
+//Näytetään kaikki listatut tehtävät
+showAllButton.addEventListener("click", function() {
+    const tasks = list.querySelectorAll("li");
+});
+
+//Näytetään vain aktiiviset tehtävät l. ei niitä jotka merkattu "done"
+showActiveButton.addEventListener("click", function() {
+    const tasks = list.querySelectorAll("li");
+    tasks.forEach(task => {
+        if (task.classList.contains("done")) {
+            task.style.display = "none";
+        } else {
+            task.style.display = "";
+        }
+    });
+});
+// //Tallennetaan lista LocalStorageen
+// function saveTasks() {
+//     localStorage.setItem("tasks", list.innerHTML);
+// }
 
 // // taustavärin vaihtaminen
 // const item = document.querySelectorAll("div");
