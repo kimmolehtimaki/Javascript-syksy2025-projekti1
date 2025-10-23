@@ -1,0 +1,29 @@
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.done {
+ text-decoration: line-through;
+ color: darkgrey;
+}
+
+.doneButton {
+    background-color: aqua;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.error {
+    border-color: red;
+}
+
+.item {
+ background-color: skyBlue;
+ height: 100px;
+ padding: 20px;
+}
+
+.pink {
+ background-color: pink;
+}
